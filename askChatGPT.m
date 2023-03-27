@@ -29,12 +29,20 @@ parameters = struct('prompt',prompt, 'max_tokens',1000);
 headers = matlab.net.http.HeaderField('Content-Type', 'application/json');
 headers(2) = matlab.net.http.HeaderField('Authorization', ['Bearer ' + api_key]);
 
-messageData = ' "model": "gpt-3.5-turbo","messages": [{"role": "user", "content": "Say this is a test!"}], "temperature": 0.7';
+%messageData = '"model": "gpt-3.5-turbo","messages": [{"role": "user", "content": "Say this is a test!"}], "temperature": "0.7"';
+messageData = [];
+
+
+%messageData(1).Name = 'model';
+%messageData(1).Value = 'gpt-3.5-turbo';
+
+messageData = '"model"="gpt-3.5-turbo"';
 
 requestData = matlab.net.http.MessageBody(messageData);
 
 % Define the request message
-request = matlab.net.http.RequestMessage('post',headers,parameters);
+%request = matlab.net.http.RequestMessage('post',headers,parameters);
+request = matlab.net.http.RequestMessage('post',headers,requestData);
 % Send the request and store the response
 response = send(request, URI(api_endpoint));
 % Extract the response text
