@@ -17,7 +17,7 @@ curl https://api.openai.com/v1/chat/completions \
 %api_endpoint = "https://api.openai.com/v1/engines/davinci/completions";
 
 % Use more modern endpoint
-api_endpoint = "https://api.openai.com/v1/completions";
+api_endpoint = "https://api.openai.com/v1/chat/completions";
 
 % Define the API key from https://beta.openai.com/account/api-keys
 api_key = "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";
@@ -36,9 +36,10 @@ messageData = [];
 %messageData(1).Name = 'model';
 %messageData(1).Value = 'gpt-3.5-turbo';
 
-messageData = '"model"="gpt-3.5-turbo"';
+messageData = '{"model":"gpt-3.5-turbo","messages": [{"role": "user", "content": "Say this is a test!"}]}';
 
 requestData = matlab.net.http.MessageBody(messageData);
+requestData.Payload = messageData;
 
 % Define the request message
 %request = matlab.net.http.RequestMessage('post',headers,parameters);
