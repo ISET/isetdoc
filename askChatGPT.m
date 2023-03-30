@@ -32,17 +32,14 @@ modelName = 'gpt-3.5-turbo';
 sourceFile = 'askChatGPT.m';
 sourceText = fileread(which(sourceFile));
 
-chatPrompt = 'Please document https://github.com/ISET/iset3d/blob/main/%40recipe/recipe.m\n';
-chatPrompt = 'What is a cat?';
+chatPrompt = 'Please document https://github.com/ISET/iset3d/blob/main/%40recipe/recipe.m';
+%chatPrompt = 'What is a cat?';
 %chatPrompt = ['{' jsonencode(chatPrompt) '}'];
 %chatPrompt = jsonencode(chatPrompt);
 
-%messageData = sprintf('{"model":"%s","messages": [{"role": "user", "content": "%s"}]}', ...
-%    modelName, chatPrompt);
 messageData = sprintf('{"model":"%s","messages": [{"role": "user", "content": "%s"}]}', ...
     modelName, chatPrompt);
 
-%messageData = '{"model":"gpt-3.5-turbo","messages": [{"role": "user", "content": "Say this is a test!"}]}';
 jsonData = messageData; % jsonencode(messageData);
 
 requestData = matlab.net.http.MessageBody(jsonData);
