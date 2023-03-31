@@ -1,3 +1,5 @@
+function [status, result] = askChatGPT(chatPrompt)
+
 import matlab.net.*
 import matlab.net.http.*
 
@@ -19,8 +21,15 @@ api_endpoint = "https://api.openai.com/v1/chat/completions";
 % Define the API key from https://beta.openai.com/account/api-keys
 api_key = "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";
 
+%{
+% Example chatPrompts
+chatPrompt = 'Please write exhaustive documentation for https://github.com/ISET/iset3d/blob/main/%40recipe/recipeGet.m in Markdown format';
+chatPrompt = 'Please write documentation for the Matab script https://github.com/ISET/isetauto/blob/metadata/scripts/s_recipeMatCreate.m';
+%chatPrompt = ['{' jsonencode(chatPrompt) '}'];
+%}
+
 % Define the parameters for the API request
-parameters = struct('prompt',prompt, 'max_tokens',4000);
+parameters = struct('prompt',chatPrompt, 'max_tokens',4000);
 % Define the headers for the API request
 headers = matlab.net.http.HeaderField('Content-Type', 'application/json');
 headers(2) = matlab.net.http.HeaderField('Authorization', ['Bearer ' + api_key]);
@@ -31,11 +40,6 @@ modelName = 'gpt-3.5-turbo';
 
 sourceFile = 'askChatGPT.m';
 sourceText = fileread(which(sourceFile));
-
-chatPrompt = 'Please document https://github.com/ISET/iset3d/blob/main/%40recipe/recipe.m';
-%chatPrompt = 'What is a cat?';
-%chatPrompt = ['{' jsonencode(chatPrompt) '}'];
-%chatPrompt = jsonencode(chatPrompt);
 
 messageData = sprintf('{"model":"%s","messages": [{"role": "user", "content": "%s"}]}', ...
     modelName, chatPrompt);
@@ -53,23 +57,10 @@ response = send(request, URI(api_endpoint));
 % Extract the response text
 response_text = response.Body.Data;
 try
-    disp(response_text.choices.message);
+    result = response_text.choices.message.content;
+    status = 0;
 catch
-    disp(response_text.error);
+    result = response_text.error;
+    status = -1;
 end
 
-
-%messageData = sprintf('{"model":"%s","messages": [{"role": "user", "content": "%s"}]}', ...
-%    modelName, chatPrompt);
-
-%requestData = matlab.net.http.MessageBody(messageData);
-%requestData.Payload = messageData;
-
-% Define the request message
-%request = matlab.net.http.RequestMessage('post',headers,parameters);
-%request = matlab.net.http.RequestMessage('post',headers,requestData);
-% Send the request and store the response
-%response = send(request, URI(api_endpoint));
-% Extract the response text
-%response_text = response.Body.Data;
-%disp(response_text.choices.message);
