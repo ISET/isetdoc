@@ -19,7 +19,7 @@ curl https://api.openai.com/v1/chat/completions \
 api_endpoint = "https://api.openai.com/v1/chat/completions";
 
 % Define the API key from https://beta.openai.com/account/api-keys
-api_key = "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";
+api_key = getpref('chatGPT','apikey','');
 
 %{
 % Example chatPrompts
