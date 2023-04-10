@@ -10,7 +10,8 @@ idRootPath = 'c:\iset\isetdoc'; % make into a function
 ourRootDocFolder = fullfile(idRootPath,'documenentation');
 
 % set a prefix for our prompt:
-chatPrefix = 'Please write documentation in Markdown format for the Matab source code ';
+%chatPrefix = 'Please write documentation in Markdown format for the Matab source code ';
+chatPrefix = 'Please write documentation in Markdown format that explains why this Matab source code is unique ';
 
 % assume ISETAuto for now
 whichSourceFolder = 'scripts';
@@ -32,14 +33,14 @@ for ii = 1:numel(ourFiles)
         [fPath, fName, fExt] = fileparts(outFile);
         outFile = fullfile(fPath, [fName '.md']);
         ourDocFile = outFile;
-        
+
         ourPrompt = [chatPrefix ourSourceFile];
         [status, result] = askChatGPT(ourPrompt);
         if status == 0
             disp('Success');
             writelines(result,ourDocFile);
         else
-            disp('Error %s \n', result);
+            frpintf('Error %s \n', result.message);
         end
     end
 end

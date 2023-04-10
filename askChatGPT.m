@@ -32,7 +32,7 @@ chatPrompt = 'Please write documentation for the Matab script https://github.com
 parameters = struct('prompt',chatPrompt, 'max_tokens',4000);
 % Define the headers for the API request
 headers = matlab.net.http.HeaderField('Content-Type', 'application/json');
-headers(2) = matlab.net.http.HeaderField('Authorization', ['Bearer ' + api_key]);
+headers(2) = matlab.net.http.HeaderField('Authorization', ['Bearer ' api_key]);
 
 modelName = 'gpt-3.5-turbo';
 
